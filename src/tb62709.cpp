@@ -104,8 +104,16 @@ void init_display(void){
 
 void set_4digit(unsigned char digits[4]){
     for(int i=0;i<4;i++){
-        load_data_register(REG0+i,digits[i]);
+        load_data_register((unsigned char)REG0+i,digits[i]);
     }
 }
 
+void set_4digit_dp(unsigned char digits[4],int dp){
+    unsigned char dps[4];
+    dps[dp] = 0x40;
+    load_data_register((unsigned char)REG0,digits[0] | dps[0]);
+    load_data_register((unsigned char)REG1,digits[1] | dps[1]);
+    load_data_register((unsigned char)REG2,digits[2] | dps[2]);
+    load_data_register((unsigned char)REG3,digits[3] | dps[3]);
+}
 

@@ -28,13 +28,15 @@ int seconds[2];
 int tick_count = 0;
 
 void tick(void){
-    count60(seconds);
+    if(count60(seconds)){
+        count60(minuites);
+    }
 }
 
 void setup(){
     init_display();
 
-    MsTimer2::set(100, tick);
+    MsTimer2::set(10, tick);
     MsTimer2::start();
 }
 
@@ -49,7 +51,8 @@ void loop(){
     digits[1] = seconds[1];
     digits[0] = seconds[0];
 
-    set_4digit(digits);
+    //set_4digit(digits);
+    set_4digit_dp(digits,2);
     normal_mode();
 
 }
