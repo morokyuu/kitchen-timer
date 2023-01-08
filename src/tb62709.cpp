@@ -102,6 +102,10 @@ void init_display(void){
     load_duty_register(0x02);
 }
 
+void set_nodecode(void){
+    load_decode_and_digit_setting(false,DIG_ALL);
+}
+
 void set_4digit(unsigned char digits[4]){
     for(int i=0;i<4;i++){
         load_data_register((unsigned char)REG0+i,digits[i]);

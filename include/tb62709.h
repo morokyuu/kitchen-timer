@@ -35,6 +35,8 @@ void blank_mode(void);
 void normal_mode(void);
 
 void init_display(void);
+void set_nodecode(void);
+
 void set_4digit(unsigned char digits[4]);
 void set_4digit_dp(unsigned char digits[4],int dp);
 

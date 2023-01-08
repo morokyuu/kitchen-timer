@@ -36,8 +36,20 @@ void tick(void){
 void setup(){
     init_display();
 
-    MsTimer2::set(10, tick);
-    MsTimer2::start();
+    set_nodecode();
+
+    //debug
+    while(true){
+        unsigned char digits[4] = {0x04,0x02,0x01,0x20};//cbaf
+        set_4digit(digits);
+        delay(500);
+        unsigned char digits2[4] = {0x08,0x10,0x00,0x00};//ed--
+        set_4digit(digits2);
+        delay(500);
+    }
+
+//    MsTimer2::set(10, tick);
+//    MsTimer2::start();
 }
 
 
