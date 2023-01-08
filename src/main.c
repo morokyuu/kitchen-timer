@@ -21,7 +21,7 @@ void loop(){
     load_data_register(REG0,0x00);
     load_data_register(REG1,0x01);
     load_data_register(REG2,0x02);
-    load_data_register(REG3,0x03);
+    load_data_register(REG3,0x43);
     normal_mode();
     delay(500);
 
