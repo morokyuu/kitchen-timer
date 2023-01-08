@@ -98,20 +98,29 @@ void normal_mode(void){
     load();
 }
 
-void standby_mode(bool dataclear_enb){
-    unsigned char dataclear = 0x00;
-    if(dataclear_enb){
-        dataclear |= 0x01;
-    }
-    serialin_t data = {
-        .HB = 0x40,
-        .LB = dataclear
-    };
-    byteout(data);
-    load();
+//----------------------------------------------- highest layer
+
+
+void init_display(void){
+    pinMode(DATA_PIN,OUTPUT);
+    pinMode(CLOCK_PIN,OUTPUT);
+    pinMode(LOAD_PIN,OUTPUT);
+
+    digitalWrite(DATA_PIN, LOW);
+    digitalWrite(CLOCK_PIN, LOW);
+    digitalWrite(LOAD_PIN, LOW);
+
+    load_decode_and_digit_setting(true,DIG_ALL);
+    load_duty_register(0x02);
 }
 
-//----------------------------------------------- highest layer
+void set_nodecode(void){
+    load_decode_and_digit_setting(false,DIG_ALL);
+}
+
+void set_decode(void){
+    load_decode_and_digit_setting(true,DIG_ALL);
+}
 
 void set_4digit(unsigned char digits[4]){
     for(unsigned char i=0;i<4;i++){

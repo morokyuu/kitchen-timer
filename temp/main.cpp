@@ -48,41 +48,19 @@ four_digits_t loopAnim[] = {
     { SEGMENT[3], 0x00, 0x00, 0x00 },
 };
 
-void do_anim(){
-    load_decode_and_digit_setting(false,DIG_ALL);
+void setup(){
+    init_display();
 
-    four_digits_t d;
+    set_nodecode();
+    four_digits_t digits;
     for(int i=0;i<sizeof(loopAnim)/sizeof(loopAnim[0]);i++){
-        d.digits.d0 = loopAnim[i].digits.d0;
-        d.digits.d1 = loopAnim[i].digits.d1;
-        d.digits.d2 = loopAnim[i].digits.d2;
-        d.digits.d3 = loopAnim[i].digits.d3;
-        set_4digit(d.array);
+        digits = loopAnim[i];
+        set_4digit(digits.array);
         delay(50);
     }
+    set_decode();
 
-    load_decode_and_digit_setting(true,DIG_ALL);
-}
-
-void setup(){
-    pinMode(DATA_PIN,OUTPUT);
-    pinMode(CLOCK_PIN,OUTPUT);
-    pinMode(LOAD_PIN,OUTPUT);
-
-    digitalWrite(DATA_PIN, LOW);
-    digitalWrite(CLOCK_PIN, LOW);
-    digitalWrite(LOAD_PIN, LOW);
-
-    standby_mode(true);
-    delay(5);
-
-    load_duty_register(0x02);
-
-    do_anim();
-
-    load_decode_and_digit_setting(true,DIG_ALL);
-
-    MsTimer2::set(1000, tick);
+    MsTimer2::set(10, tick);
     MsTimer2::start();
 }
 
@@ -97,6 +75,7 @@ void loop(){
     digits[1] = seconds[1];
     digits[0] = seconds[0];
 
+    //set_4digit(digits);
     set_4digit_dp(digits,2);
     normal_mode();
 
