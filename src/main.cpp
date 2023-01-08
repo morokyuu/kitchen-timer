@@ -33,21 +33,64 @@ void tick(void){
     }
 }
 
+//typedef struct{
+//    unsigned char digit0;
+//    unsigned char digit1;
+//    unsigned char digit2;
+//    unsigned char digit3;
+//}segment_pattern_t;
+//
+//segment_pattern_t loopAnim[4] = {
+//    { SEGMENT[2], 0x00, 0x00, 0x00 },
+//    { 0x00, SEGMENT[1], 0x00, 0x00 },
+//    { 0x00, 0x00, SEGMENT[0], 0x00 },
+//    { 0x00, 0x00, 0x00, SEGMENT[5] },
+//};
+
+typedef union{
+    typedef struct{
+        unsigned char digit0;
+        unsigned char digit1;
+        unsigned char digit2;
+        unsigned char digit3;
+    }digits;
+    unsigned char array[4];
+}four_digits_t;
+
+four_digits_t loopAnim[] = {
+    { SEGMENT[2], 0x00, 0x00, 0x00 },
+    { SEGMENT[1], 0x00, 0x00, 0x00 },
+    { SEGMENT[0], 0x00, 0x00, 0x00 },
+    { 0x00, SEGMENT[0], 0x00, 0x00 },
+    { 0x00, 0x00, SEGMENT[0], 0x00 },
+    { 0x00, 0x00, 0x00, SEGMENT[0] },
+    { 0x00, 0x00, 0x00, SEGMENT[5] },
+    { 0x00, 0x00, 0x00, SEGMENT[4] },
+    { 0x00, 0x00, 0x00, SEGMENT[3] },
+    { 0x00, 0x00, SEGMENT[3], 0x00 },
+    { 0x00, SEGMENT[3], 0x00, 0x00 },
+    { SEGMENT[3], 0x00, 0x00, 0x00 },
+};
+
 void setup(){
     init_display();
 
     set_nodecode();
 
     //debug
+    four_digits_t digits;
     while(true){
-        unsigned char digits[4];
-
-        digits[0] = SEGMENT[0];
-        digits[1] = SEGMENT[1];
-        digits[2] = SEGMENT[2];
-        digits[3] = SEGMENT[3];
-        set_4digit(digits);
-        delay(500);
+        for(int i=0;i<sizeof(loopAnim)/sizeof(loopAnim[0]);i++){
+            digits = loopAnim[i];
+            set_4digit(digits.array);
+            delay(50);
+        }
+        
+        //unsigned char digits[4];
+        //digits[0] = SEGMENT[0];
+        //digits[1] = SEGMENT[1];
+        //digits[2] = SEGMENT[2];
+        //digits[3] = SEGMENT[3];
     }
 
 //    MsTimer2::set(10, tick);
