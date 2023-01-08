@@ -4,6 +4,11 @@
 #define CLOCK_PIN 3 
 #define LOAD_PIN 4
 
+typedef struct{
+    unsigned char HB;
+    unsigned char LB;
+}serialin_t;
+
 
 void setup(){
     pinMode(DATA_PIN,OUTPUT);
@@ -21,17 +26,43 @@ void bitout(int val){
     digitalWrite(CLOCK_PIN, HIGH);
 }
 
+void byteout(serialin_t data){
+    for(int i=0;i<8;i++){
+        bitout(data.HB & 1<<(7-i));
+    }
+    for(int i=0;i<8;i++){
+        bitout(data.LB & 1<<(7-i));
+    }
+}
+
 void load(void){
     digitalWrite(LOAD_PIN, HIGH);
     digitalWrite(LOAD_PIN, LOW);
 }
 
-int allon[] = {0,0,1,1, 0,0,0,0, 0,0,0,0, 0,0,0,0};
-void loop(){
-    for(int i=0;i<16;i++){
-        bitout(allon[i]);
-    }
+void all_on_mode(void){
+    serialin_t data = {
+        .HB = 0x30,
+        .LB = 0x00
+    };
+    byteout(data);
     load();
-    delay(10);
+}
+
+void blank_mode(void){
+    serialin_t data = {
+        .HB = 0x00,
+        .LB = 0x00
+    };
+    byteout(data);
+    load();
+}
+
+void loop(){
+    all_on_mode();
+    delay(1000);
+
+    blank_mode();
+    delay(1000);
 }
 
