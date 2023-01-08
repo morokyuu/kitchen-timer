@@ -58,6 +58,23 @@ void load_duty_register(unsigned char duty){
     load();
 }
 
+typedef enum{
+    DIG0 = 0x00,
+    DIG01 = 0x01,
+    DIG012 = 0x02,
+    DIG_ALL = 0x03
+}digit_act_t;
+
+void load_digit_activate_register(digit_act_t act){
+    serialin_t data = {
+        .HB = 0x21,
+        .LB = act 
+    };
+    byteout(data);
+    load();
+}
+
+
 void setup(){
     pinMode(DATA_PIN,OUTPUT);
     pinMode(CLOCK_PIN,OUTPUT);
@@ -67,6 +84,7 @@ void setup(){
     digitalWrite(CLOCK_PIN, LOW);
     digitalWrite(LOAD_PIN, LOW);
 
+    load_digit_activate_register(DIG01);
 }
 
 void loop(){
