@@ -86,4 +86,26 @@ void normal_mode(void){
     load();
 }
 
-//-----------------------------------------------
+//----------------------------------------------- highest layer
+
+
+void init_display(void){
+    pinMode(DATA_PIN,OUTPUT);
+    pinMode(CLOCK_PIN,OUTPUT);
+    pinMode(LOAD_PIN,OUTPUT);
+
+    digitalWrite(DATA_PIN, LOW);
+    digitalWrite(CLOCK_PIN, LOW);
+    digitalWrite(LOAD_PIN, LOW);
+
+    load_decode_and_digit_setting(true,DIG_ALL);
+    load_duty_register(0x02);
+}
+
+void set_4digit(unsigned char digits[4]){
+    for(int i=0;i<4;i++){
+        load_data_register(REG0+(3-i),digits[i]);
+    }
+}
+
+

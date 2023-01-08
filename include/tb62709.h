@@ -34,5 +34,7 @@ void all_on_mode(void);
 void blank_mode(void);
 void normal_mode(void);
 
+void init_display(void);
+void set_4digit(unsigned char digits[4]);
 
 #endif //TB62709_HEADER_FILE

@@ -2,26 +2,14 @@
 #include "tb62709.h"
 
 void setup(){
-    pinMode(DATA_PIN,OUTPUT);
-    pinMode(CLOCK_PIN,OUTPUT);
-    pinMode(LOAD_PIN,OUTPUT);
-
-    digitalWrite(DATA_PIN, LOW);
-    digitalWrite(CLOCK_PIN, LOW);
-    digitalWrite(LOAD_PIN, LOW);
-
-    load_decode_and_digit_setting(true,DIG_ALL);
-    load_duty_register(0x02);
-
+    init_display();
 }
 
 
 void loop(){
+    unsigned char digits[4] = {0x04,0x05,0x06,0x07};
 
-    load_data_register(REG0,0x00);
-    load_data_register(REG1,0x01);
-    load_data_register(REG2,0x02);
-    load_data_register(REG3,0x43);
+    set_4digit(digits);
     normal_mode();
     delay(500);
 
