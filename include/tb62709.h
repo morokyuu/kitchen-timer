@@ -10,13 +10,13 @@
 extern const unsigned char SEGMENT[8]; 
 
 typedef union{
+    unsigned char array[4];
     typedef struct{
         unsigned char d0;
         unsigned char d1;
         unsigned char d2;
         unsigned char d3;
     }digits;
-    unsigned char array[4];
 }four_digits_t;
 
 

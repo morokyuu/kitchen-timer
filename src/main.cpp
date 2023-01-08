@@ -53,10 +53,7 @@ void do_anim(){
 
     four_digits_t d;
     for(int i=0;i<sizeof(loopAnim)/sizeof(loopAnim[0]);i++){
-        d.digits.d0 = loopAnim[i].digits.d0;
-        d.digits.d1 = loopAnim[i].digits.d1;
-        d.digits.d2 = loopAnim[i].digits.d2;
-        d.digits.d3 = loopAnim[i].digits.d3;
+        d = loopAnim[i];
         set_4digit(d.array);
         delay(50);
     }
