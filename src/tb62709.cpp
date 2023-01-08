@@ -60,7 +60,7 @@ void load_decode_and_digit_setting(bool decodeEnable,digit_act_t digit_enb){
     load();
 }
 
-void load_data_register(register_t reg, unsigned char digit){
+void load_data_register(unsigned char reg, unsigned char digit){
     serialin_t data = {
         .HB = reg,
         .LB = digit 
@@ -119,17 +119,17 @@ void set_nodecode(void){
 }
 
 void set_4digit(unsigned char digits[4]){
-    for(int i=0;i<4;i++){
-        load_data_register((unsigned char)REG0+i,digits[i]);
+    for(unsigned char i=0;i<4;i++){
+        load_data_register((unsigned char)(0x20+i),digits[i]);
     }
 }
 
 void set_4digit_dp(unsigned char digits[4],int dp){
     unsigned char dps[4];
     dps[dp] = 0x40;
-    load_data_register((unsigned char)REG0,digits[0] | dps[0]);
-    load_data_register((unsigned char)REG1,digits[1] | dps[1]);
-    load_data_register((unsigned char)REG2,digits[2] | dps[2]);
-    load_data_register((unsigned char)REG3,digits[3] | dps[3]);
+    load_data_register(REG0 + 0,(digits[0] | dps[0]));
+    load_data_register(REG0 + 1,(digits[1] | dps[1]));
+    load_data_register(REG0 + 2,(digits[2] | dps[2]));
+    load_data_register(REG0 + 3,(digits[3] | dps[3]));
 }
 

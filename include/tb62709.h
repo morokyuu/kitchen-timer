@@ -21,16 +21,17 @@ typedef enum{
     DIG_ALL = 0x03
 }digit_act_t;
 
-typedef enum{
-    REG0 = 0x22,
-    REG1 = 0x23,
-    REG2 = 0x24,
-    REG3 = 0x25,
-}register_t;
+const unsigned char REG0 = 0x22;
+//typedef enum{
+//    REG0 = 0x22,
+//    REG1 = 0x23,
+//    REG2 = 0x24,
+//    REG3 = 0x25,
+//}register_t;
 
 void load_duty_register(unsigned char duty);
 void load_decode_and_digit_setting(bool decodeEnable,digit_act_t digit_enb);
-void load_data_register(register_t reg, unsigned char digit);
+void load_data_register(unsigned char reg, unsigned char digit);
 
 void all_on_mode(void);
 void blank_mode(void);
