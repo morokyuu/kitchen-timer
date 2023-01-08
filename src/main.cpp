@@ -70,13 +70,7 @@ void setup(){
     digitalWrite(CLOCK_PIN, LOW);
     digitalWrite(LOAD_PIN, LOW);
 
-    standby_mode(true);
-    delay(5);
-
     load_duty_register(0x02);
-
-    do_anim();
-
     load_decode_and_digit_setting(true,DIG_ALL);
 
     MsTimer2::set(1000, tick);
