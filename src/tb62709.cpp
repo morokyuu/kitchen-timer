@@ -104,7 +104,7 @@ void init_display(void){
 
 void set_4digit(unsigned char digits[4]){
     for(int i=0;i<4;i++){
-        load_data_register(REG0+(3-i),digits[i]);
+        load_data_register(REG0+i,digits[i]);
     }
 }
 
