@@ -65,15 +65,46 @@ typedef enum{
     DIG_ALL = 0x03
 }digit_act_t;
 
-void load_digit_activate_register(digit_act_t act){
+//decode enable is default
+void load_decode_and_digit_setting(bool decodeEnable,digit_act_t digit_enb){
+    unsigned char dec = 0x00; //nodecode
+    if(decodeEnable){
+        dec = 0x10;
+    }
+    dec = dec | digit_enb;
+    
     serialin_t data = {
         .HB = 0x21,
-        .LB = act 
+        .LB = dec
     };
     byteout(data);
     load();
 }
 
+typedef enum{
+    REG0 = 0x22,
+    REG1 = 0x23,
+    REG2 = 0x24,
+    REG3 = 0x25,
+}register_t;
+
+void load_data_register(register_t reg, unsigned char digit){
+    serialin_t data = {
+        .HB = reg,
+        .LB = digit 
+    };
+    byteout(data);
+    load();
+}
+
+void normal_mode(void){
+    serialin_t data = {
+        .HB = 0x10,
+        .LB = 0x00
+    };
+    byteout(data);
+    load();
+}
 
 void setup(){
     pinMode(DATA_PIN,OUTPUT);
@@ -84,28 +115,26 @@ void setup(){
     digitalWrite(CLOCK_PIN, LOW);
     digitalWrite(LOAD_PIN, LOW);
 
-    load_digit_activate_register(DIG01);
+    load_decode_and_digit_setting(true,DIG_ALL);
+    load_duty_register(0x02);
+
 }
 
+
 void loop(){
-    load_duty_register(0x0F);
-    all_on_mode();
-    delay(80);
 
-    load_duty_register(0x07);
-    all_on_mode();
-    delay(80);
+    load_data_register(REG0,0x00);
+    load_data_register(REG1,0x0a);
+    load_data_register(REG2,0x0b);
+    load_data_register(REG3,0x0c);
+    normal_mode();
+    delay(500);
 
-    load_duty_register(0x01);
-    all_on_mode();
-    delay(80);
-
-    blank_mode();
-    delay(80);
-
-    load_duty_register(0x07);
-    all_on_mode();
-    delay(80);
-
+    load_data_register(REG0,0x10);
+    load_data_register(REG1,0x1a);
+    load_data_register(REG2,0x1b);
+    load_data_register(REG3,0x1c);
+    normal_mode();
+    delay(500);
 }
 
