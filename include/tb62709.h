@@ -7,6 +7,8 @@
 #define CLOCK_PIN 3 
 #define LOAD_PIN 4
 
+extern const unsigned char SEGMENT[8]; 
+
 typedef struct{
     unsigned char HB;
     unsigned char LB;

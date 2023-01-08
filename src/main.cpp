@@ -40,11 +40,13 @@ void setup(){
 
     //debug
     while(true){
-        unsigned char digits[4] = {0x04,0x02,0x01,0x20};//cbaf
+        unsigned char digits[4];
+
+        digits[0] = SEGMENT[0];
+        digits[1] = SEGMENT[1];
+        digits[2] = SEGMENT[2];
+        digits[3] = SEGMENT[3];
         set_4digit(digits);
-        delay(500);
-        unsigned char digits2[4] = {0x08,0x10,0x00,0x00};//ed--
-        set_4digit(digits2);
         delay(500);
     }
 

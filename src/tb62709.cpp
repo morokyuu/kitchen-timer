@@ -1,6 +1,18 @@
 
 #include "tb62709.h"
 
+
+const unsigned char SEGMENT[] = {
+    0x01,// a
+    0x02,// b
+    0x04,// c
+    0x08,// d
+    0x10,// e
+    0x20,// f
+    0x40,// g
+    0x80,// dp
+};
+
 //----------------------------------------- bottom layer
 void bitout(int val){
     digitalWrite(CLOCK_PIN, LOW);
