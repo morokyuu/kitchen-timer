@@ -1,6 +1,18 @@
 
 #include "tb62709.h"
 
+
+const unsigned char SEGMENT[] = {
+    0x01,// a
+    0x02,// b
+    0x04,// c
+    0x08,// d
+    0x10,// e
+    0x20,// f
+    0x40,// g
+    0x80,// dp
+};
+
 //----------------------------------------- bottom layer
 void bitout(int val){
     digitalWrite(CLOCK_PIN, LOW);
@@ -48,7 +60,7 @@ void load_decode_and_digit_setting(bool decodeEnable,digit_act_t digit_enb){
     load();
 }
 
-void load_data_register(register_t reg, unsigned char digit){
+void load_data_register(unsigned char reg, unsigned char digit){
     serialin_t data = {
         .HB = reg,
         .LB = digit 
@@ -86,34 +98,33 @@ void normal_mode(void){
     load();
 }
 
-//----------------------------------------------- highest layer
-
-
-void init_display(void){
-    pinMode(DATA_PIN,OUTPUT);
-    pinMode(CLOCK_PIN,OUTPUT);
-    pinMode(LOAD_PIN,OUTPUT);
-
-    digitalWrite(DATA_PIN, LOW);
-    digitalWrite(CLOCK_PIN, LOW);
-    digitalWrite(LOAD_PIN, LOW);
-
-    load_decode_and_digit_setting(true,DIG_ALL);
-    load_duty_register(0x02);
+void standby_mode(bool dataclear_enb){
+    unsigned char dataclear = 0x00;
+    if(dataclear_enb){
+        dataclear |= 0x01;
+    }
+    serialin_t data = {
+        .HB = 0x40,
+        .LB = dataclear
+    };
+    byteout(data);
+    load();
 }
 
+//----------------------------------------------- highest layer
+
 void set_4digit(unsigned char digits[4]){
-    for(int i=0;i<4;i++){
-        load_data_register((unsigned char)REG0+i,digits[i]);
+    for(unsigned char i=0;i<4;i++){
+        load_data_register((unsigned char)(REG0+i),digits[i]);
     }
 }
 
 void set_4digit_dp(unsigned char digits[4],int dp){
     unsigned char dps[4];
     dps[dp] = 0x40;
-    load_data_register((unsigned char)REG0,digits[0] | dps[0]);
-    load_data_register((unsigned char)REG1,digits[1] | dps[1]);
-    load_data_register((unsigned char)REG2,digits[2] | dps[2]);
-    load_data_register((unsigned char)REG3,digits[3] | dps[3]);
+    load_data_register(REG0 + 0,(digits[0] | dps[0]));
+    load_data_register(REG0 + 1,(digits[1] | dps[1]));
+    load_data_register(REG0 + 2,(digits[2] | dps[2]));
+    load_data_register(REG0 + 3,(digits[3] | dps[3]));
 }
 

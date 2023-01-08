@@ -30,9 +30,18 @@ void tick(void){
 }
 
 void setup(){
-    init_display();
+    pinMode(DATA_PIN,OUTPUT);
+    pinMode(CLOCK_PIN,OUTPUT);
+    pinMode(LOAD_PIN,OUTPUT);
 
-    MsTimer2::set(10, tick);
+    digitalWrite(DATA_PIN, LOW);
+    digitalWrite(CLOCK_PIN, LOW);
+    digitalWrite(LOAD_PIN, LOW);
+
+    load_duty_register(0x02);
+    load_decode_and_digit_setting(true,DIG_ALL);
+
+    MsTimer2::set(1000, tick);
     MsTimer2::start();
 
     pinMode(TONE_PIN,OUTPUT);
@@ -71,7 +80,6 @@ void loop(){
     digits[1] = seconds[1];
     digits[0] = seconds[0];
 
-    //set_4digit(digits);
     set_4digit_dp(digits,2);
     normal_mode();
 
