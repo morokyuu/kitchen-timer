@@ -13,6 +13,12 @@ void loop(){
     normal_mode();
     delay(500);
 
+    unsigned char digits2[4] = {8,9,0,1};
+
+    set_4digit(digits2);
+    normal_mode();
+    delay(500);
+
     load_data_register(REG0,0x10);
     load_data_register(REG1,0x1a);
     load_data_register(REG2,0x1b);
