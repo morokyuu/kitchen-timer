@@ -9,6 +9,17 @@
 
 extern const unsigned char SEGMENT[8]; 
 
+typedef union{
+    typedef struct{
+        unsigned char digit0;
+        unsigned char digit1;
+        unsigned char digit2;
+        unsigned char digit3;
+    }digits;
+    unsigned char array[4];
+}four_digits_t;
+
+
 typedef struct{
     unsigned char HB;
     unsigned char LB;
@@ -39,6 +50,7 @@ void normal_mode(void);
 
 void init_display(void);
 void set_nodecode(void);
+void set_decode(void);
 
 void set_4digit(unsigned char digits[4]);
 void set_4digit_dp(unsigned char digits[4],int dp);
