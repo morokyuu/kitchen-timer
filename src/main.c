@@ -10,15 +10,6 @@ typedef struct{
 }serialin_t;
 
 
-void setup(){
-    pinMode(DATA_PIN,OUTPUT);
-    pinMode(CLOCK_PIN,OUTPUT);
-    pinMode(LOAD_PIN,OUTPUT);
-
-    digitalWrite(DATA_PIN, LOW);
-    digitalWrite(CLOCK_PIN, LOW);
-    digitalWrite(LOAD_PIN, LOW);
-}
 
 void bitout(int val){
     digitalWrite(CLOCK_PIN, LOW);
@@ -58,11 +49,45 @@ void blank_mode(void){
     load();
 }
 
+void load_duty_register(unsigned char duty){
+    serialin_t data = {
+        .HB = 0x20,
+        .LB = duty
+    };
+    byteout(data);
+    load();
+}
+
+void setup(){
+    pinMode(DATA_PIN,OUTPUT);
+    pinMode(CLOCK_PIN,OUTPUT);
+    pinMode(LOAD_PIN,OUTPUT);
+
+    digitalWrite(DATA_PIN, LOW);
+    digitalWrite(CLOCK_PIN, LOW);
+    digitalWrite(LOAD_PIN, LOW);
+
+}
+
 void loop(){
+    load_duty_register(0x0F);
     all_on_mode();
-    delay(1000);
+    delay(80);
+
+    load_duty_register(0x07);
+    all_on_mode();
+    delay(80);
+
+    load_duty_register(0x01);
+    all_on_mode();
+    delay(80);
 
     blank_mode();
-    delay(1000);
+    delay(80);
+
+    load_duty_register(0x07);
+    all_on_mode();
+    delay(80);
+
 }
 
