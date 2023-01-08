@@ -120,7 +120,7 @@ void set_nodecode(void){
 
 void set_4digit(unsigned char digits[4]){
     for(unsigned char i=0;i<4;i++){
-        load_data_register((unsigned char)(0x20+i),digits[i]);
+        load_data_register((unsigned char)(REG0+i),digits[i]);
     }
 }
 
