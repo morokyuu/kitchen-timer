@@ -182,7 +182,12 @@ void loop(){
             }
             break;
         case RUN:
-            if(timer_process()){
+            if(!digitalRead(SELECT_BTN)){
+                //reset
+                delay(300);
+                state = MENU;
+            }
+            else if(timer_process()){
                 state = TIMEOVER;
             }
             else{
@@ -210,8 +215,5 @@ void loop(){
         default:
             break;
     }
-
-
-
 }
 
