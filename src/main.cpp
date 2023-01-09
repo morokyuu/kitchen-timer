@@ -78,9 +78,20 @@ void tone_sound(){
 }
 
 
-int minuites[2] = {1,0};
-int seconds[2] = {0,0};
+//int minuites[2] = {1,0};
+//int seconds[2] = {0,0};
 int tick_count = 0;
+
+union timerset_t{
+    int array[4];
+    struct {
+        int minuites[2];
+        int seconds[2];
+    }keta;
+};
+timerset_t sett = {1,0,0,0};
+timerset_t time;
+
 
 enum state_t{
     MENU,
@@ -91,12 +102,14 @@ state_t state;
 
 int timer_process(){
     //kitchen-timer
-    if(countdown60(seconds)){
+    if(countdown60(time.keta.seconds)){
         //tone_sound();
-        seconds[1] = 5;
-        seconds[0] = 9;
+        time.keta.seconds[1] = 5;
+        time.keta.seconds[0] = 9;
+        //seconds[1] = 5;
+        //seconds[0] = 9;
 
-        if(countdown60(minuites)){
+        if(countdown60(time.keta.minuites)){
             return 1;
         }
     }
@@ -126,8 +139,8 @@ void alarm(){
     tone_sound();
 }
 
+
 void loop(){
-    unsigned char digits[4];
 
     while(!tick_flag);
     tick_flag = false;
@@ -135,6 +148,7 @@ void loop(){
     switch(state){
         case MENU:
             if(!digitalRead(START_BTN)){
+                time = sett;
                 state = RUN;
             }
             break;
@@ -143,11 +157,13 @@ void loop(){
                 state = TIMEOVER;
             }
             else{
-                digits[3] = minuites[1];
-                digits[2] = minuites[0];
-                digits[1] = seconds[1];
-                digits[0] = seconds[0];
+                unsigned char digits[4];
+                digits[3] = time.keta.minuites[1];
+                digits[2] = time.keta.minuites[0];
+                digits[1] = time.keta.seconds[1];
+                digits[0] = time.keta.seconds[0];
                 set_4digit_dp(digits,2);
+                //set_4digit_dp(time.array,2);
                 normal_mode();
             }
             break;
