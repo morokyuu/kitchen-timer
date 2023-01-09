@@ -63,7 +63,7 @@ void setup(){
     load_duty_register(0x02);
     load_decode_and_digit_setting(true,DIG_ALL);
 
-    MsTimer2::set(70, tick);
+    MsTimer2::set(100, tick);
     MsTimer2::start();
 
     pinMode(TONE_PIN,OUTPUT);
@@ -80,7 +80,6 @@ void tone_sound(){
 
 int minuites[2] = {3,0};
 int seconds[2] = {0,5};
-int tick_count = 0;
 
 enum state_t{
     MENU,
@@ -89,7 +88,22 @@ enum state_t{
 };
 state_t state;
 
+
+int tick_count = 0;
+bool divider(int *count){
+    (*count)++;
+    if(*count > 10){
+        *count = 0;
+        return true;
+    }
+    return false;
+}
+
 int timer_process(){
+    if(!divider(&tick_count)){
+        return 0;
+    }
+
     //kitchen-timer
     if(countdown60(seconds)){
         //tone_sound();
