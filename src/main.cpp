@@ -129,12 +129,8 @@ void alarm(){
     static int blink_cn = 0;
     const int brightness[6] = {0,2,4,7,4,2};
 
-    for(int i=0;i<3;i++){
-        blink_cn++;
-        if(blink_cn > 5){
-            blink_cn = 0;
-        }
-        load_duty_register(blink_cn);
+    for(int i=0;i<6;i++){
+        load_duty_register(i);
         tone_sound();
     }
 }
@@ -204,6 +200,7 @@ void loop(){
             if(!digitalRead(START_BTN) ||
                !digitalRead(SELECT_BTN))
             {
+                load_duty_register(0x02);
                 state = MENU;
             }
             else{
