@@ -3,9 +3,9 @@
 
 #include <Arduino.h>
 
-#define DATA_PIN 2
-#define CLOCK_PIN 3 
-#define LOAD_PIN 4
+#define LOAD_PIN  9
+#define CLOCK_PIN 8 
+#define DATA_PIN  7
 
 extern const unsigned char SEGMENT[8]; 
 

@@ -2,9 +2,9 @@
 #include "tb62709.h"
 #include "MsTimer2.h"
 
-#define TONE_PIN 9
-#define START_BTN 7
-#define SELECT_BTN 8
+#define TONE_PIN   4
+#define SELECT_BTN 3
+#define START_BTN  2
 
 //return value = borrow
 bool countdown60(int *count){
