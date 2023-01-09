@@ -78,8 +78,8 @@ void tone_sound(){
 }
 
 
-int minuites[2] = {3,0};
-int seconds[2] = {0,5};
+int minuites[2] = {1,0};
+int seconds[2] = {0,0};
 int tick_count = 0;
 
 enum state_t{
@@ -97,8 +97,6 @@ int timer_process(){
         seconds[0] = 9;
 
         if(countdown60(minuites)){
-            tone_sound();
-            tone_sound();
             return 1;
         }
     }
@@ -114,6 +112,19 @@ int timer_process(){
     return 0;
 }
 
+void alarm(){
+    static int blink = false;
+
+    if(blink){
+        all_on_mode();
+        blink = false;
+    } 
+    else{
+        blank_mode();
+        blink = true;
+    }
+    tone_sound();
+}
 
 void loop(){
     unsigned char digits[4];
@@ -141,11 +152,12 @@ void loop(){
             }
             break;
         case TIMEOVER:
-            tone_sound();
-            all_on_mode();
-            delay(100);
-            blank_mode();
-            delay(100);
+            if(!digitalRead(SELECT_BTN)){
+                state = MENU;
+            }
+            else{
+                alarm();
+            }
             break;
         default:
             break;
