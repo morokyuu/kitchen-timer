@@ -4,6 +4,22 @@
 
 #define TONE_PIN 9
 
+//return value = borrow
+bool countdown60(int *count){
+    *count -= 1;
+
+    if(*count < 0){
+        *(count+1) -= 1;
+        if(*(count+1) < 0){
+            return true;
+        }
+        else{
+            *count = 9;
+        }
+    }
+    return false;
+}
+
 //return value = carriage
 bool count60(int *count){
     *count += 1;
@@ -19,7 +35,6 @@ bool count60(int *count){
         return true;
     }
     return false;
-
 }
 
 
@@ -41,7 +56,7 @@ void setup(){
     load_duty_register(0x02);
     load_decode_and_digit_setting(true,DIG_ALL);
 
-    MsTimer2::set(1000, tick);
+    MsTimer2::set(70, tick);
     MsTimer2::start();
 
     pinMode(TONE_PIN,OUTPUT);
@@ -56,8 +71,8 @@ void tone_sound(){
 }
 
 
-int minuites[2];
-int seconds[2];
+int minuites[2] = {3,0};
+int seconds[2] = {0,5};
 int tick_count = 0;
 
 void loop(){
@@ -65,16 +80,29 @@ void loop(){
     while(!tick_flag);
     tick_flag = false;
 
+    //kitchen-timer
+    if(countdown60(seconds)){
+        //tone_sound();
+        seconds[1] = 5;
+        seconds[0] = 9;
 
-    if(count60(seconds)){
-        tone_sound();
-        if(count60(minuites)){
+        if(countdown60(minuites)){
             tone_sound();
             tone_sound();
+            MsTimer2::stop();
         }
     }
 
-    unsigned char digits[4] = {0,0,0,0};
+//  stopwatch
+//    if(count60(seconds)){
+//        tone_sound();
+//        if(count60(minuites)){
+//            tone_sound();
+//            tone_sound();
+//        }
+//    }
+
+    unsigned char digits[4];
     digits[3] = minuites[1];
     digits[2] = minuites[0];
     digits[1] = seconds[1];
