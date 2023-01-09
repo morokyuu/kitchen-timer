@@ -131,13 +131,21 @@ void loop(){
             if(timer_process()){
                 state = TIMEOVER;
             }
-
-            digits[3] = minuites[1];
-            digits[2] = minuites[0];
-            digits[1] = seconds[1];
-            digits[0] = seconds[0];
-            set_4digit_dp(digits,2);
-            normal_mode();
+            else{
+                digits[3] = minuites[1];
+                digits[2] = minuites[0];
+                digits[1] = seconds[1];
+                digits[0] = seconds[0];
+                set_4digit_dp(digits,2);
+                normal_mode();
+            }
+            break;
+        case TIMEOVER:
+            tone_sound();
+            all_on_mode();
+            delay(100);
+            blank_mode();
+            delay(100);
             break;
         default:
             break;
