@@ -139,6 +139,37 @@ void alarm(){
     tone_sound();
 }
 
+const timerset_t sett_arry[] = {
+    {1,0,0,0},
+    {3,0,0,0},
+    {5,0,0,0},
+    {0,1,0,0},
+    {5,1,0,0},
+    {0,3,0,0},
+    {0,6,0,0},
+};
+
+void select_time(timerset_t *sett){
+    static int round = 0;
+
+    if(!digitalRead(SELECT_BTN)){
+        round++;
+        if(round > sizeof(sett_arry)/sizeof(sett_arry[0])-1){
+            round = 0;
+        }
+        delay(300);
+    }
+    
+    *sett = sett_arry[round];
+
+    unsigned char digits[4];
+    digits[3] = (*sett).keta.minuites[1];
+    digits[2] = (*sett).keta.minuites[0];
+    digits[1] = (*sett).keta.seconds[1];
+    digits[0] = (*sett).keta.seconds[0];
+    set_4digit_dp(digits,2);
+    normal_mode();
+}
 
 void loop(){
 
@@ -147,6 +178,8 @@ void loop(){
 
     switch(state){
         case MENU:
+            select_time(&sett);
+
             if(!digitalRead(START_BTN)){
                 time = sett;
                 state = RUN;
@@ -168,7 +201,9 @@ void loop(){
             }
             break;
         case TIMEOVER:
-            if(!digitalRead(SELECT_BTN)){
+            if(!digitalRead(START_BTN) ||
+               !digitalRead(SELECT_BTN))
+            {
                 state = MENU;
             }
             else{
