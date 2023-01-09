@@ -3,6 +3,8 @@
 #include "MsTimer2.h"
 
 #define TONE_PIN 9
+#define START_BTN 7
+#define SELECT_BTN 8
 
 //return value = borrow
 bool countdown60(int *count){
@@ -53,6 +55,11 @@ void setup(){
     digitalWrite(CLOCK_PIN, LOW);
     digitalWrite(LOAD_PIN, LOW);
 
+
+    pinMode(START_BTN, INPUT_PULLUP);
+    pinMode(SELECT_BTN,INPUT_PULLUP);
+
+
     load_duty_register(0x02);
     load_decode_and_digit_setting(true,DIG_ALL);
 
@@ -75,11 +82,14 @@ int minuites[2] = {3,0};
 int seconds[2] = {0,5};
 int tick_count = 0;
 
-void loop(){
+enum state_t{
+    MENU,
+    RUN,
+    TIMEOVER,
+};
+state_t state;
 
-    while(!tick_flag);
-    tick_flag = false;
-
+int timer_process(){
     //kitchen-timer
     if(countdown60(seconds)){
         //tone_sound();
@@ -89,7 +99,7 @@ void loop(){
         if(countdown60(minuites)){
             tone_sound();
             tone_sound();
-            MsTimer2::stop();
+            return 1;
         }
     }
 
@@ -101,15 +111,39 @@ void loop(){
 //            tone_sound();
 //        }
 //    }
+    return 0;
+}
 
+
+void loop(){
     unsigned char digits[4];
-    digits[3] = minuites[1];
-    digits[2] = minuites[0];
-    digits[1] = seconds[1];
-    digits[0] = seconds[0];
 
-    set_4digit_dp(digits,2);
-    normal_mode();
+    while(!tick_flag);
+    tick_flag = false;
+
+    switch(state){
+        case MENU:
+            if(!digitalRead(START_BTN)){
+                state = RUN;
+            }
+            break;
+        case RUN:
+            if(timer_process()){
+                state = TIMEOVER;
+            }
+
+            digits[3] = minuites[1];
+            digits[2] = minuites[0];
+            digits[1] = seconds[1];
+            digits[0] = seconds[0];
+            set_4digit_dp(digits,2);
+            normal_mode();
+            break;
+        default:
+            break;
+    }
+
+
 
 }
 
