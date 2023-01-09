@@ -71,9 +71,9 @@ void setup(){
 
 void tone_sound(){
     tone(TONE_PIN,440,100);
-    delay(100);
+    delay(20);
     tone(TONE_PIN,392,100);
-    delay(100);
+    delay(20);
     digitalWrite(TONE_PIN,LOW);
 }
 
@@ -126,17 +126,17 @@ int timer_process(){
 }
 
 void alarm(){
-    static int blink = false;
+    static int blink_cn = 0;
+    const int brightness[6] = {0,2,4,7,4,2};
 
-    if(blink){
-        all_on_mode();
-        blink = false;
-    } 
-    else{
-        blank_mode();
-        blink = true;
+    for(int i=0;i<3;i++){
+        blink_cn++;
+        if(blink_cn > 5){
+            blink_cn = 0;
+        }
+        load_duty_register(blink_cn);
+        tone_sound();
     }
-    tone_sound();
 }
 
 const timerset_t sett_arry[] = {
