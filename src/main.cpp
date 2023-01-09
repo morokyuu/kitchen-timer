@@ -114,12 +114,8 @@ int timer_process(){
 
     //kitchen-timer
     if(countdown60(time.keta.seconds)){
-        //tone_sound();
         time.keta.seconds[1] = 5;
         time.keta.seconds[0] = 9;
-        //seconds[1] = 5;
-        //seconds[0] = 9;
-
         if(countdown60(time.keta.minuites)){
             return 1;
         }
@@ -208,7 +204,6 @@ void loop(){
                 digits[1] = time.keta.seconds[1];
                 digits[0] = time.keta.seconds[0];
                 set_4digit_dp(digits,2);
-                //set_4digit_dp(time.array,2);
                 normal_mode();
             }
             break;
