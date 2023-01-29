@@ -63,7 +63,8 @@ void setup(){
     load_duty_register(0x02);
     load_decode_and_digit_setting(true,DIG_ALL);
 
-    MsTimer2::set(100, tick);
+    //5s late
+    MsTimer2::set(92, tick);
     MsTimer2::start();
 
     pinMode(TONE_PIN,OUTPUT);
